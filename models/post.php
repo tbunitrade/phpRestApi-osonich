@@ -1,6 +1,7 @@
 <?php
 
- class Post {
+ class Post
+ {
      //DB stuff
      private $conn;
      private $table = 'posts';
@@ -154,5 +155,34 @@
          return false;
 
          //end of create function
+     }
+
+     //Delete Post
+
+     public function delete() {
+         $query = 'DELETE FROM ' . $this->table . ' WHERE id = :id';
+
+         //
+
+         //Prepate statement
+         $stmt = $this->conn->prepare($query);
+
+         //Clean data
+
+         $this->id = htmlspecialchars(strip_tags($this->id));
+
+         //Bind data
+
+         $stmt->bindParam(':id', $this->id);
+
+         // Execute query
+
+         if ($stmt->execute()) {
+             return true;
+         }
+         //print error if something goes down (
+         printf("Error: %s.\n", $stmt->error);
+
+         return false;
      }
  }
